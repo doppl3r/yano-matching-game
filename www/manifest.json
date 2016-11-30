@@ -1,0 +1,6 @@
+{
+  "manifest": [
+    { "id": "run", "src": "sounds/run.mp3" },
+    { "id": "level 1", "src": "levels/level_1.txt" }
+  ]
+}

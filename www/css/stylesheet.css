@@ -1,0 +1,6 @@
+html { background-color:#000; font-family: prstart; }
+body { margin:0; overflow:hidden; }
+canvas { display: block; width: 100%; height: auto; background-color: #ffffff; }
+#content { margin: 0 auto; display: flex; flex-direction: column; justify-content: center; }
+@font-face { font-family: prstart; src: url('../fonts/prstart.ttf'); }
+@font-face { font-family: icons; src: url('../fonts/Boxel-Icons.ttf'); }
