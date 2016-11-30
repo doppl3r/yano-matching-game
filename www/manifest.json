@@ -1,5 +1,7 @@
 {
   "manifest": [
-    { "id": "run", "src": "sounds/run.mp3" }
+    { "id": "card_1", "src": "img/card_1.jpg" },
+    { "id": "card_2", "src": "img/card_2.jpg" },
+    { "id": "card_3", "src": "img/card_3.jpg" }
   ]
 }

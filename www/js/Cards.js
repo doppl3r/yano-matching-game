@@ -23,7 +23,7 @@
         var cardHeight = 176;
         for (var row=0; row < rows; row++){
             for (var col=0; col < cols; col++){
-                this.addCard(col*((cardWidth+spacing)/2), row*((cardHeight+spacing)/2));
+                this.addCard(col*((cardWidth+spacing)), row*((cardHeight+spacing)));
             }
         }
         this.x = window.Game.getWidth() / 2;
@@ -46,9 +46,9 @@
         this.height = 176;
         this.regX = this.width / 2;
         this.regY = this.height / 2;
-        this.s = new createjs.Shape();
-        this.s.graphics.beginFill("#000000").drawRect(x,y,this.width,this.height);
-        this.addChild(this.s);
+        this.rotation = this.getRandomInt(-5,5);
+        this.image = new createjs.Bitmap(window.Game.assetManager.preload.getResult("card_"+this.getRandomInt(1,3)));
+        this.addChild(this.image);
         this.addListeners();
     }
 
@@ -66,8 +66,11 @@
     }
     container.pressMove = function(evt) {  }
     container.click = function(evt) {  }
-    container.rollOver = function(evt) { this.alpha = 0.5; }
+    container.rollOver = function(evt) { this.alpha = 0.5; this.cursor="pointer"; }
     container.rollOut = function(evt) { this.alpha = 1; }
+    container.getRandomInt = function(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     window.Card = createjs.promote(Card, "Container");
 }(window));
