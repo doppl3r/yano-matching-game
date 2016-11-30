@@ -1,8 +1,6 @@
-# Boxel Rebound
+# Yano Matching Game
 
-Remaster your jumping skills and conquer your best records! 
-Boxel was originally written in Java and is currently 
-being developed completely from scratch in JavaScript.
+Get the highest score for matching the cards
 
 #### Tools:
   - [CreateJS](http://createjs.com/) (Canvas)

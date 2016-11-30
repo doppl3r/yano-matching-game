@@ -3,7 +3,7 @@
     //constructor
     function Cards() {
         this.Container_constructor();
-        this.setupCards(4, 3);
+        this.setupCards(4, 3, 12);
     }
 
     var container = createjs.extend(Cards, createjs.Container); //instance of class
@@ -18,8 +18,18 @@
     //add Card containers to this container
     container.addCard = function(x, y){ this.addChild(new Card(x,y)); }
     container.removeAllCards = function(){ this.removeAllChildren(); }
-    container.setupCards = function(cols, rows){
-
+    container.setupCards = function(cols, rows, spacing){
+        var cardWidth = 112;
+        var cardHeight = 176;
+        for (var row=0; row < rows; row++){
+            for (var col=0; col < cols; col++){
+                this.addCard(col*((cardWidth+spacing)/2), row*((cardHeight+spacing)/2));
+            }
+        }
+        this.x = window.Game.getWidth() / 2;
+        this.y = window.Game.getHeight() / 2;
+        this.regX = ((cardWidth + spacing) * (cols - 1))/2;
+        this.regY = ((cardHeight + spacing) * (rows - 1))/2;
     }
 
     window.Cards = createjs.promote(Cards, "Container");
@@ -32,8 +42,12 @@
         this.Container_constructor();
         this.x = x;
         this.y = y;
+        this.width = 112;
+        this.height = 176;
+        this.regX = this.width / 2;
+        this.regY = this.height / 2;
         this.s = new createjs.Shape();
-        this.s.graphics.beginFill("#000000").drawRect(x,y,112,176);
+        this.s.graphics.beginFill("#000000").drawRect(x,y,this.width,this.height);
         this.addChild(this.s);
         this.addListeners();
     }
@@ -52,8 +66,8 @@
     }
     container.pressMove = function(evt) {  }
     container.click = function(evt) {  }
-    container.rollOver = function(evt) {  }
-    container.rollOut = function(evt) {  }
+    container.rollOver = function(evt) { this.alpha = 0.5; }
+    container.rollOut = function(evt) { this.alpha = 1; }
 
     window.Card = createjs.promote(Card, "Container");
 }(window));
