@@ -6,7 +6,7 @@
     }
     function tick(event) {
         this.delta = event.delta; //elapsedTimeInMS / 1000msPerSecond
-
+        window.Game.cards.tick(delta);
         window.Game.stage.update();
     }
 
