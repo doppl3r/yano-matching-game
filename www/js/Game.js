@@ -63,6 +63,9 @@
         if (parseInt(content.style.width) > window.innerWidth) content.style.width = window.innerWidth + "px";
     }
     Game.prototype.retry = function(){ }
+    Game.prototype.win =  function(){
+        console.log('you won!');
+    }
 
     //create prototype of self
     window.Game = new Game();

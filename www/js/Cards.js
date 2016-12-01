@@ -16,22 +16,26 @@
     }
 
     //add Card containers to this container
-    container.addCard = function(x, y, id){ this.addChild(new Card(x,y,id)); }
+    container.addCard = function(x, y, id, index){ this.addChild(new Card(x,y,id,index)); }
     container.removeAllCards = function(){ this.removeAllChildren(); }
     container.setupCards = function(cols, rows, spacing){
+        this.totalMatches = (cols * rows) / 2;
+        this.currentMatch = 0;
+        this.matches = 0;
         var cardWidth = 112;
         var cardHeight = 176;
-        var matches = (cols * rows) / 2;
-        var order = []; //list of matches
-        for (var i=0; i < matches; i++){
+        var order = []; //list of totalMatches
+        for (var i=0; i < this.totalMatches; i++){
             order.push(i+1); //match 1
             order.push(i+1); //match 2
         }
         order = this.shuffle(order);
 
+        var index = 0;
         for (var row=0; row < rows; row++){
             for (var col=0; col < cols; col++){
-                this.addCard(col*((cardWidth+spacing)), row*((cardHeight+spacing)), order[col+(row*cols)]);
+                index = col+(row*cols);
+                this.addCard(col*((cardWidth+spacing)), row*((cardHeight+spacing)), order[index], index);
             }
         }
         this.x = window.Game.getWidth() / 2;
@@ -48,6 +52,29 @@
         }
         return array;
     }
+    container.checkMatch = function(id, index){
+        this.currentMatch++;
+        if (this.currentMatch == 1){ this.card1 = this.getChildAt(index); }
+        else if (this.currentMatch == 2){
+            this.card2 = this.getChildAt(index);
+            if (this.card1.id == this.card2.id){
+                this.matches++;
+                if (this.matches >= this.totalMatches){ //win
+                    this.resetAllTweens();
+                }
+            }
+            else {
+                this.card1.resetTween();
+                this.card2.resetTween();
+            }
+            this.currentMatch = 0;
+        }
+    }
+    container.resetAllTweens = function(){
+        var length = this.children.length;
+        for (var i=0; i < length; i++){ this.getChildAt(i).resetTween(i*100); }
+        this.matches = 0;
+    }
 
     window.Cards = createjs.promote(Cards, "Container");
 }(window));
@@ -55,18 +82,20 @@
 //Card Class
 (function (window) {
     //constructor
-    function Card(x, y, id) {
+    function Card(x, y, id, index) {
         this.Container_constructor();
         this.x = x;
         this.y = y;
         this.id = id;
+        this.index = index;
         this.width = 112;
         this.height = 176;
         this.regX = this.width / 2;
         this.regY = this.height / 2;
+        this.flipped = false;
         this.rotation = this.getRandomInt(-5,5);
         this.image_1 = new createjs.Bitmap(window.Game.assetManager.preload.getResult("card_"+this.getRandomInt(1,3)));
-        this.image_2 = new createjs.Bitmap(window.Game.assetManager.preload.getResult("card_image_1"));
+        this.image_2 = new createjs.Bitmap(window.Game.assetManager.preload.getResult("card_image_"+id));
         this.image = this.image_1;
         this.addChild(this.image);
         this.addListeners();
@@ -88,15 +117,35 @@
     }
     container.pressMove = function(evt) {  }
     container.click = function(evt) {
-        createjs.Tween.get(this, {override:false}).to({scaleX: 0, scaleY: 1.25}, 250, createjs.Ease.sineIn)
-            .call(function(){ this.removeAllChildren(); this.addChild(this.image_2); console.log(this.id); })
-            .to({scaleX: 1, scaleY: 1}, 250, createjs.Ease.sineOut);
-        this.parent.setChildIndex(this, this.parent.children.length-1);
+        this.startTween();
     }
     container.rollOver = function(evt) { this.cursor="pointer"; }
     container.rollOut = function(evt) { }
     container.getRandomInt = function(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    container.startTween = function(){
+        if (this.flipped == false){
+            createjs.Tween.get(this, {override:false}).to({scaleX: 0, scaleY: 1.25}, 250, createjs.Ease.sineIn)
+            .call(function(){
+                this.removeAllChildren();
+                this.addChild(this.image_2);
+                this.parent.checkMatch(this.id, this.index);
+                this.flipped = true;
+            })
+            .to({scaleX: 1, scaleY: 1}, 250, createjs.Ease.sineOut);
+        }
+    }
+    container.resetTween = function(delay){
+        delay = delay != null ? delay : 0;
+        this.flipped = false;
+        createjs.Tween.get(this, {override:false}).wait(delay).to({scaleX: 0, scaleY: 1.25}, 250, createjs.Ease.sineIn)
+        .call(function(){
+            this.removeAllChildren();
+            this.addChild(this.image_1);
+            this.flipped = false;
+        })
+        .to({scaleX: 1, scaleY: 1}, 250, createjs.Ease.sineOut);
     }
 
     window.Card = createjs.promote(Card, "Container");
