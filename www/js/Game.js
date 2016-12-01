@@ -1,22 +1,19 @@
 (function (window) {
     //private functions
     function Game(){  //constructor
-        this.gamePaused = false;
         Game.prototype.init();
     }
     function tick(event) {
         this.delta = event.delta; //elapsedTimeInMS / 1000msPerSecond
         window.Game.cards.tick(delta);
+        window.Game.setCurrentTime();
         window.Game.stage.update();
     }
 
     //public functions
     Game.prototype.init = function() {
-        //phonegap activities
-        window.addEventListener('resize', function(){ Game.prototype.resizeCanvas(); });
-
+        // setup everything yo
         this.canvas = document.getElementById("gameCanvas");
-        this.resizeCanvas();
         this.stage = new createjs.Stage(this.canvas);
         this.stage.enableMouseOver(60);
         createjs.Touch.enable(this.stage);
@@ -27,9 +24,10 @@
         this.stage.on("stagemousedown", function(event){ Game.prototype.stageMouseDown(event); });
         this.stage.on("stagemousemove", function(event){ Game.prototype.stageMouseMove(event); });
         this.stage.on("stagemouseup", function(event){ Game.prototype.stageMouseUp(event); });
-
         this.assetManager.preload.on("complete", function(){ Game.prototype.setStage(); });
         this.assetManager.preload.on("progress", function(){ Game.prototype.assetManager.updateLoading(); window.Game.stage.update(); });
+
+        this.initFirebase();
     }
     Game.prototype.setStage = function() {
         //clean up stage
@@ -65,6 +63,63 @@
     Game.prototype.retry = function(){ }
     Game.prototype.win =  function(){
         console.log('you won!');
+    }
+    Game.prototype.initFirebase = function(){
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAMjfMoIorZmQhmM4g0N-yWbWRz0Bh7bwo",
+            authDomain: "christmas-cards-66f71.firebaseapp.com",
+            databaseURL: "https://christmas-cards-66f71.firebaseio.com",
+            storageBucket: "christmas-cards-66f71.appspot.com",
+            messagingSenderId: "532421049479"
+        };
+        firebase.initializeApp(config);
+        this.db = firebase.database();
+        this.updateHighScoreText();
+    }
+    Game.prototype.setHighScore = function(newName, newTime){
+        this.db.ref('leaderboard/score').set({
+            name: newName,
+            time: newTime
+        });
+    }
+    Game.prototype.checkHighScore = function(newTime){
+        var ref = this.db.ref('leaderboard/score');
+        ref.once('value').then(function(snapshot){
+            var score = snapshot.val().time;
+            if (newTime < score){
+                alertify.defaultValue("guest")
+                .okBtn("Submit")
+                .cancelBtn("No Thanks")
+                .prompt("" +
+                    "<h3>New High Score!</h3>" +
+                    "<h1>"+window.timer.toString(newTime)+"</h1>" +
+                    "<p>Please enter your name</p>",
+                    function (val, ev) {
+                        ev.preventDefault();
+                        window.Game.setHighScore(val, newTime);
+                        window.Game.setCurrentTime(0);
+                        window.Game.updateHighScoreText();
+
+                    }, function(ev){
+                        ev.preventDefault();
+                        window.Game.setCurrentTime(0);
+                        window.Game.updateHighScoreText();
+                    }
+                );
+            }
+        });
+    }
+    Game.prototype.setCurrentTime = function(forceTime){
+        if (window.timer.play == true || forceTime != null){
+            document.getElementById('currentTime').innerHTML = window.timer.toString(forceTime != null ? forceTime : null);
+        }
+    }
+    Game.prototype.updateHighScoreText = function(){
+        var ref = this.db.ref('leaderboard/score');
+        ref.once('value').then(function(snapshot){
+            document.getElementById('highScore').innerHTML = window.timer.toString(snapshot.val().time);
+        });
     }
 
     //create prototype of self

@@ -1,6 +1,50 @@
-html { background-color:#ffffff; font-family: prstart; }
-body { margin:0; overflow:hidden; }
+html { background-color:#ffffff; }
+body { margin:0; }
 canvas { display: block; width: 100%; height: auto; background-color: #ffffff; }
+div { font-family: 'akzidenz-light-cn'; text-align: center; color: #666666; }
+h1, h3, p { margin: 0; }
+h1 { font-size: 72px; line-height: 64px; margin: 12px 0 6px; }
+h3 { font-size: 48px; line-height: 36px; }
+p, input[type="text"], button {
+    outline-width: 0 !important;
+    font-size: 32px !important;
+    line-height: 28px !important;
+    margin-bottom: 12px;
+    text-align: center;
+}
+input[type="text"] { border: 2px solid #cccccc !important; background-color: #f3f3f3 !important; }
+
 #content { margin: 0 auto; display: flex; flex-direction: column; justify-content: center; }
-@font-face { font-family: prstart; src: url('../fonts/prstart.ttf'); }
-@font-face { font-family: icons; src: url('../fonts/Boxel-Icons.ttf'); }
+.wrapper { max-width: 960px; margin: 0 auto; }
+.row { margin-right: 0; margin-left: 0; }
+
+@font-face {
+    font-family: 'akzidenz-cn';
+    src: url('../fonts/AkzidenzGroteskBE-Cn.eot');
+    src: url('../fonts/AkzidenzGroteskBE-Cn.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/AkzidenzGroteskBE-Cn.woff') format('woff'),
+    url('../fonts/AkzidenzGroteskBE-Cn.ttf') format('truetype'),
+    url('../fonts/AkzidenzGroteskBE-Cn.svg#ubunturegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'akzidenz-light-cn';
+    src: url('../fonts/AkzidenzGroteskBE-LightCn.eot');
+    src: url('../fonts/AkzidenzGroteskBE-LightCn.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/AkzidenzGroteskBE-LightCn.woff') format('woff'),
+    url('../fonts/AkzidenzGroteskBE-LightCn.ttf') format('truetype'),
+    url('../fonts/AkzidenzGroteskBE-LightCn.svg#ubunturegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'akzidenz-light';
+    src: url('../fonts/AkzidenzGroteskBE-Light.eot');
+    src: url('../fonts/AkzidenzGroteskBE-Light.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/AkzidenzGroteskBE-Light.woff') format('woff'),
+    url('../fonts/AkzidenzGroteskBE-Light.ttf') format('truetype'),
+    url('../fonts/AkzidenzGroteskBE-Light.svg#ubunturegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -3,7 +3,7 @@
     //constructor
     function Cards() {
         this.Container_constructor();
-        this.setupCards(4, 3, 12);
+        this.setupCards(1, 2, 12);
     }
 
     var container = createjs.extend(Cards, createjs.Container); //instance of class
@@ -60,6 +60,8 @@
             if (this.card1.id == this.card2.id){ //found a match
                 this.matches++;
                 if (this.matches >= this.totalMatches){ //win
+                    window.timer.stop();
+                    window.Game.checkHighScore(window.timer.stopTime);
                     this.resetAllTweens();
                 }
             }
@@ -117,6 +119,7 @@
     }
     container.pressMove = function(evt) {  }
     container.click = function(evt) {
+        if (window.timer.play != true) window.timer.start();
         this.startTween();
     }
     container.rollOver = function(evt) { this.cursor="pointer"; }

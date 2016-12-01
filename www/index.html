@@ -5,16 +5,26 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
         <meta content='width=device-width, initial-scale=.2, maximum-scale=.2, user-scalable=0' name='viewport' />
+        <link rel="stylesheet" type="text/css" href="css/alertify.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
         <title>Yano Matching Game</title>
     </head>
     <body>
-        <div class="app">
-            <div id="content">
-                <canvas id="gameCanvas" width="600" height="600"></canvas>
+        <div class="wrapper">
+            <div class="row vertical-align">
+                <div class="col-sm-6">
+                    <canvas id="gameCanvas" width="600" height="600"></canvas>
+                    <h1 id="currentTime">00:00</h1>
+                </div>
+                <div class="col-sm-6">
+                    <h1 id="highScore"></h1>
+                </div>
             </div>
         </div>
 
+        <script src="js/jquery-2.1.0.js"></script>
+        <script src="js/alertify.js"></script>
         <script src="js/preloadjs-NEXT.min.js"></script>
         <script src="js/soundjs-NEXT.min.js"></script>
         <script src="js/easeljs-NEXT.combined.js"></script>
