@@ -57,13 +57,13 @@
         if (this.currentMatch == 1){ this.card1 = this.getChildAt(index); }
         else if (this.currentMatch == 2){
             this.card2 = this.getChildAt(index);
-            if (this.card1.id == this.card2.id){
+            if (this.card1.id == this.card2.id){ //found a match
                 this.matches++;
                 if (this.matches >= this.totalMatches){ //win
                     this.resetAllTweens();
                 }
             }
-            else {
+            else { //no match was found
                 this.card1.resetTween();
                 this.card2.resetTween();
             }
@@ -127,20 +127,22 @@
     container.startTween = function(){
         if (this.flipped == false){
             createjs.Tween.get(this, {override:false}).to({scaleX: 0, scaleY: 1.25}, 250, createjs.Ease.sineIn)
-            .call(function(){
+            .call(function(){ //swap out image
                 this.removeAllChildren();
                 this.addChild(this.image_2);
-                this.parent.checkMatch(this.id, this.index);
                 this.flipped = true;
             })
-            .to({scaleX: 1, scaleY: 1}, 250, createjs.Ease.sineOut);
+            .to({scaleX: 1, scaleY: 1}, 250, createjs.Ease.sineOut)
+            .call(function(){
+                this.parent.checkMatch(this.id, this.index);
+            });
         }
     }
     container.resetTween = function(delay){
         delay = delay != null ? delay : 0;
         this.flipped = false;
         createjs.Tween.get(this, {override:false}).wait(delay).to({scaleX: 0, scaleY: 1.25}, 250, createjs.Ease.sineIn)
-        .call(function(){
+        .call(function(){ //reset original image
             this.removeAllChildren();
             this.addChild(this.image_1);
             this.flipped = false;
