@@ -3,7 +3,7 @@
     //constructor
     function Cards() {
         this.Container_constructor();
-        this.setupCards(1, 2, 12);
+        this.setupCards(4, 3, 12);
     }
 
     var container = createjs.extend(Cards, createjs.Container); //instance of class
