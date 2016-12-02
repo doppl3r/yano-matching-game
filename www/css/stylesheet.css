@@ -33,19 +33,33 @@ input[type="text"] { border: 2px solid #cccccc !important; margin: 12px 0; }
     margin-bottom: 22px;
 }
 .noselect { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-
-#content {  }
-.wrapper { display: flex; flex-direction: column; justify-content: center; max-width: 1260px; margin: 0 auto; }
+.wrapper {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 1260px;
+    margin: 0 auto;
+}
 .row {
     display: -webkit-box;
-    display: -webkit-flex;
+    display: -moz-box;
     display: -ms-flexbox;
-    display:         flex;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
     margin-right: 0;
     margin-left: 0;
 }
 .row > [class*='col-'] {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
     flex-direction: column;
     justify-content: center;
