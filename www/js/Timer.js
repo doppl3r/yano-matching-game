@@ -23,7 +23,7 @@
             var milliseconds = ((a/1000)%1).toFixed(2).slice(-2);
             var seconds = (Math.floor((a/1000)));
             if (("0"+seconds).length <= 2) seconds = ("0"+seconds).slice(-2);
-            return seconds+":"+milliseconds;
+            return seconds+"."+milliseconds;
         }
     }
     //create prototype of self

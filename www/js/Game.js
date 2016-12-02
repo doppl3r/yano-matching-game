@@ -13,7 +13,9 @@
     //public functions
     Game.prototype.init = function() {
         // setup everything yo
+        window.addEventListener('resize', function(){ Game.prototype.resizeCanvas(); });
         this.canvas = document.getElementById("gameCanvas");
+        this.resizeCanvas();
         this.stage = new createjs.Stage(this.canvas);
         this.stage.enableMouseOver(60);
         createjs.Touch.enable(this.stage);
@@ -35,12 +37,13 @@
 
         //initialize game objects
         if (this.cards == null) this.cards = new Cards();
+        if (this.endGraphics == null) this.endGraphics = new EndGraphics();
 
         //ensure stage is blank and add the player
         this.stage.clear();
 
         //draw according to game view
-        this.stage.addChild(this.cards); //loading
+        this.stage.addChild(this.endGraphics, this.cards); //loading
 
         //start game timer
         if (!createjs.Ticker.hasEventListener("tick")) {
@@ -55,14 +58,17 @@
     Game.prototype.getWidth = function(){ return this.canvas.width; }
     Game.prototype.getHeight = function(){ return this.canvas.height; }
     Game.prototype.resizeCanvas = function(){
-        var content = document.getElementById("content");
+        var content = document.getElementById("wrapper");
         content.style.height = window.innerHeight+"px";
         content.style.width = (this.canvas.width/this.canvas.height)*parseInt(content.style.height)+"px";
         if (parseInt(content.style.width) > window.innerWidth) content.style.width = window.innerWidth + "px";
     }
-    Game.prototype.retry = function(){ }
-    Game.prototype.win =  function(){
-        console.log('you won!');
+    Game.prototype.retry = function(){
+        window.timer.stop();
+        this.setCurrentTime(0);
+        this.endGraphics.fadeOut();
+        this.cards.removeAllCards();
+        this.cards.setupCards(4, 3, 12);
     }
     Game.prototype.initFirebase = function(){
         // Initialize Firebase
@@ -119,7 +125,12 @@
         var ref = this.db.ref('leaderboard/score');
         ref.once('value').then(function(snapshot){
             document.getElementById('highScore').innerHTML = window.timer.toString(snapshot.val().time);
+            document.getElementById('highScoreName').innerHTML = snapshot.val().name;
         });
+    }
+    Game.prototype.resizeCanvas = function(){
+        var content = document.getElementById("wrapper");
+        content.style.height = window.innerHeight+"px";
     }
 
     //create prototype of self

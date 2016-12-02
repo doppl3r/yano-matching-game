@@ -19,6 +19,7 @@
     container.addCard = function(x, y, id, index){ this.addChild(new Card(x,y,id,index)); }
     container.removeAllCards = function(){ this.removeAllChildren(); }
     container.setupCards = function(cols, rows, spacing){
+        //initialize cards by rows and columns
         this.totalMatches = (cols * rows) / 2;
         this.currentMatch = 0;
         this.matches = 0;
@@ -31,6 +32,7 @@
         }
         order = this.shuffle(order);
 
+        //add cards
         var index = 0;
         for (var row=0; row < rows; row++){
             for (var col=0; col < cols; col++){
@@ -38,6 +40,8 @@
                 this.addCard(col*((cardWidth+spacing)), row*((cardHeight+spacing)), order[index], index);
             }
         }
+
+        //set table coordinates
         this.x = window.Game.getWidth() / 2;
         this.y = window.Game.getHeight() / 2;
         this.regX = ((cardWidth + spacing) * (cols - 1))/2;
@@ -61,7 +65,6 @@
                 this.matches++;
                 if (this.matches >= this.totalMatches){ //win
                     window.timer.stop();
-                    window.Game.checkHighScore(window.timer.stopTime);
                     this.resetAllTweens();
                 }
             }
@@ -74,7 +77,8 @@
     }
     container.resetAllTweens = function(){
         var length = this.children.length;
-        for (var i=0; i < length; i++){ this.getChildAt(i).resetTween(i*100); }
+        for (var i=0; i < length; i++){ this.getChildAt(i).hideTween(i*100); }
+        window.Game.endGraphics.fadeIn();
         this.matches = 0;
     }
 
@@ -84,7 +88,7 @@
 //Card Class
 (function (window) {
     //constructor
-    function Card(x, y, id, index) {
+    function Card(x, y, id, index, delay) {
         this.Container_constructor();
         this.x = x;
         this.y = y;
@@ -141,7 +145,21 @@
             });
         }
     }
-    container.resetTween = function(delay){
+    container.resetTween = function(delay, lastDelay){
+        delay = delay != null ? delay : 0;
+        this.flipped = false;
+        createjs.Tween.get(this, {override:false}).wait(delay).to({scaleX: 0, scaleY: 1.25}, 250, createjs.Ease.sineIn)
+        .call(function(){ //reset original image
+            this.removeAllChildren();
+            this.addChild(this.image_1);
+            this.flipped = false;
+            if (delay == lastDelay){
+                console.log('flipped');
+            }
+        })
+        .to({scaleX: 1, scaleY: 1}, 250, createjs.Ease.sineOut);
+    }
+    container.hideTween = function(delay){
         delay = delay != null ? delay : 0;
         this.flipped = false;
         createjs.Tween.get(this, {override:false}).wait(delay).to({scaleX: 0, scaleY: 1.25}, 250, createjs.Ease.sineIn)
@@ -150,7 +168,7 @@
             this.addChild(this.image_1);
             this.flipped = false;
         })
-        .to({scaleX: 1, scaleY: 1}, 250, createjs.Ease.sineOut);
+        .to({scaleX: 1, scaleY: 1, alpha: 0 }, 250, createjs.Ease.sineOut);
     }
 
     window.Card = createjs.promote(Card, "Container");

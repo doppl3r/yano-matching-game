@@ -8,6 +8,7 @@
     { "id": "card_image_3", "src": "img/card_image_3.png" },
     { "id": "card_image_4", "src": "img/card_image_4.png" },
     { "id": "card_image_5", "src": "img/card_image_5.png" },
-    { "id": "card_image_6", "src": "img/card_image_6.png" }
+    { "id": "card_image_6", "src": "img/card_image_6.png" },
+    { "id": "end_graphic_1", "src": "img/end_graphic_1.png" }
   ]
 }
