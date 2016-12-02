@@ -123,7 +123,10 @@
     }
     container.pressMove = function(evt) {  }
     container.click = function(evt) {
-        if (window.timer.play != true) window.timer.start();
+        if (window.timer.play != true){
+            window.Game.hideRetryButton();
+            window.timer.start();
+        }
         this.startTween();
     }
     container.rollOver = function(evt) { this.cursor="pointer"; }

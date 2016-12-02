@@ -65,6 +65,7 @@
     }
     Game.prototype.retry = function(){
         window.timer.stop();
+        window.Game.hideRetryButton();
         this.setCurrentTime(0);
         this.endGraphics.fadeOut();
         this.cards.removeAllCards();
@@ -90,31 +91,35 @@
         });
     }
     Game.prototype.checkHighScore = function(newTime){
-        var ref = this.db.ref('leaderboard/score');
-        ref.once('value').then(function(snapshot){
-            var score = snapshot.val().time;
-            if (newTime < score){
-                alertify.defaultValue("guest")
-                .okBtn("Submit")
-                .cancelBtn("No Thanks")
-                .prompt("" +
-                    "<h3>New High Score!</h3>" +
-                    "<h1>"+window.timer.toString(newTime)+"</h1>" +
-                    "<p>Please enter your name</p>",
-                    function (val, ev) {
-                        ev.preventDefault();
-                        window.Game.setHighScore(val, newTime);
-                        window.Game.setCurrentTime(0);
-                        window.Game.updateHighScoreText();
+        if (window.timer.play == false){
+            var ref = this.db.ref('leaderboard/score');
+            ref.once('value').then(function(snapshot){
+                var score = snapshot.val().time;
+                if (newTime < score){
+                    alertify.defaultValue("your name")
+                    .okBtn("Submit high score")
+                    .cancelBtn("Cancel high score")
+                    .prompt("" +
+                        "<h3>New High Score!</h3>" +
+                        "<h1>"+window.timer.toString(newTime)+"</h1>",
+                        function (val, ev) {
+                            ev.preventDefault();
+                            window.Game.setHighScore(val, newTime);
+                            window.Game.setCurrentTime(0);
+                            window.Game.updateHighScoreText();
+                            window.Game.showRetryButton(); //show retry button
 
-                    }, function(ev){
-                        ev.preventDefault();
-                        window.Game.setCurrentTime(0);
-                        window.Game.updateHighScoreText();
-                    }
-                );
-            }
-        });
+                        }, function(ev){
+                            ev.preventDefault();
+                            window.Game.setCurrentTime(0);
+                            window.Game.updateHighScoreText();
+                            window.Game.showRetryButton(); //show retry button
+                        }
+                    );
+                }
+                else window.Game.showRetryButton(); //show retry button
+            });
+        }
     }
     Game.prototype.setCurrentTime = function(forceTime){
         if (window.timer.play == true || forceTime != null){
@@ -132,7 +137,14 @@
         var content = document.getElementById("wrapper");
         content.style.height = window.innerHeight+"px";
     }
-
+    Game.prototype.hideRetryButton = function(){
+        var button = document.getElementById("retry");
+        button.style.display = "none";
+    }
+    Game.prototype.showRetryButton = function(){
+        var button = document.getElementById("retry");
+        button.style.display = "table";
+    }
     //create prototype of self
     window.Game = new Game();
 }(window));

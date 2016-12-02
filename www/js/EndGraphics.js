@@ -13,10 +13,8 @@
     //check all EndGraphics inside this container
     container.tick = function (delta) {}
     container.fadeIn = function(){
-        createjs.Tween.get(this, {override:false}).wait(1000).to({alpha: 1}, 4000, createjs.Ease.sineInOut)
-        .call(function(){
-            window.Game.checkHighScore(window.timer.stopTime);
-        });
+        createjs.Tween.get(this, {override:false}).wait(0).to({alpha: 1}, 2500, createjs.Ease.sineInOut)
+        .call(function(){ window.Game.checkHighScore(window.timer.stopTime); });
     }
     container.fadeOut = function(){
         createjs.Tween.get(this, {override:false}).to({alpha: 0}, 250, createjs.Ease.sineInOut);
