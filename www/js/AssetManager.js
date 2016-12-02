@@ -51,6 +51,7 @@
             this.centerX-(this.bar2.width/2), 600-(this.bar2.height/2),
             (this.preload.progress * this.bar2.width | 0), this.bar2.height);
     }
+    container.getManifest = function(){ return this.preload._loadedResults.manifest.manifest; }
 
 	window.AssetManager = createjs.promote(AssetManager, "Container");
 }(window));

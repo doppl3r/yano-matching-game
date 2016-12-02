@@ -21,18 +21,34 @@
     container.setupCards = function(cols, rows, spacing){
         //initialize cards by rows and columns
         this.totalMatches = (cols * rows) / 2;
-        this.currentMatch = 0;
-        this.matches = 0;
+        this.totalOptions = 0; //increase this number when more graphics exist in manifest
+        this.currentMatch = 0; //reset current matches
+        this.playerMatches = 0; //reset matches possible
+
         var cardWidth = 112;
         var cardHeight = 176;
         var order = []; //list of totalMatches
+        var options = []; //list of random card id numbers
+
+        var tempAssetList = window.Game.assetManager.getManifest().slice(0);
+        var tempAssetListLength = tempAssetList.length;
+        for (var i=tempAssetListLength-1; i>=0; i--){
+            if (tempAssetList[i].back == "true"){
+                this.totalOptions++;
+                options.push(this.totalOptions);
+            }
+        }
+        options = this.shuffle(options);
+        while (options.length > this.totalMatches) options.pop(); //remove last item
+
         for (var i=0; i < this.totalMatches; i++){
-            order.push(i+1); //match 1
-            order.push(i+1); //match 2
+            var id = options[i];
+            order.push(id); //match 1
+            order.push(id); //match 2
         }
         order = this.shuffle(order);
 
-        //add cards
+        //add cards to deck
         var index = 0;
         for (var row=0; row < rows; row++){
             for (var col=0; col < cols; col++){
@@ -62,8 +78,8 @@
         else if (this.currentMatch == 2){
             this.card2 = this.getChildAt(index);
             if (this.card1.id == this.card2.id){ //found a match
-                this.matches++;
-                if (this.matches >= this.totalMatches){ //win
+                this.playerMatches++;
+                if (this.playerMatches >= this.totalMatches){ //win
                     window.timer.stop();
                     this.resetAllTweens();
                 }
@@ -79,7 +95,7 @@
         var length = this.children.length;
         for (var i=0; i < length; i++){ this.getChildAt(i).hideTween(i*100); }
         window.Game.endGraphics.fadeIn();
-        this.matches = 0;
+        this.playerMatches = 0;
     }
 
     window.Cards = createjs.promote(Cards, "Container");
