@@ -16,7 +16,6 @@
         this.preload = new createjs.LoadQueue(true);
         this.preload.installPlugin(createjs.Sound);
         this.preload.loadManifest({ id: "manifest", src:"manifest.json" });
-        this.box = 30;
 
         //draw background of progress bar
         this.barX = this.width / 2;
@@ -25,10 +24,10 @@
         this.barHeight = this.box / 2;
         this.bar1 = new createjs.Shape();
         this.bar1.graphics.beginFill("#bed62f").drawRect(
-            this.barX - (this.barWidth/2) - (this.box * 0.5),
-            this.barY - (this.barHeight/2) - (this.box * 0.5),
-            this.barWidth + this.box,
-            this.barHeight + this.box);
+            this.barX - (this.barWidth/2) - (this.box * 0.25),
+            this.barY - (this.barHeight/2) - (this.box * 0.25),
+            this.barWidth + this.box * 0.5,
+            this.barHeight + this.box * 0.5);
 
         //draw progress bar
         this.bar2 = new createjs.Shape();
