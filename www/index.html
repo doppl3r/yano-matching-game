@@ -11,23 +11,24 @@
         <title>Yano Matching Game</title>
     </head>
     <body>
-        <div class="wrapper" id="wrapper">
-            <div class="row">
-                <div class="col-sm-6">
-                    <canvas id="gameCanvas" width="600" height="600"></canvas>
-                    <p>Your Score</p>
-                    <h1 id="currentTime">00.00</h1>
-                </div>
-                <div class="col-sm-6 pad-top">
-                    <p>High Score</p>
-                    <h1 id="highScore">00.00</h1>
-                    <h3 id="highScoreName">name</h3>
-                    <div id="retry" class="retry noselect" onclick="window.Game.retry()">retry</div>
+        <div class="content" id="content">
+            <div class="wrapper">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <canvas id="gameCanvas" width="600" height="600"></canvas>
+                        <p>Your Score</p>
+                        <h1 id="currentTime">00.00</h1>
+                    </div>
+                    <div class="col-sm-6 pad-top">
+                        <p>High Score</p>
+                        <h1 id="highScore">.</h1>
+                        <h3 id="highScoreName">.</h3>
+                        <div id="retry" class="retry noselect" onclick="window.Game.retry()">retry</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <script src="js/jquery-2.1.0.js"></script>
         <script src="js/alertify.js"></script>
         <script src="js/preloadjs-NEXT.min.js"></script>
         <script src="js/soundjs-NEXT.min.js"></script>

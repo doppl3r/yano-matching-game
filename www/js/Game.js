@@ -19,8 +19,9 @@
         this.stage = new createjs.Stage(this.canvas);
         this.stage.enableMouseOver(60);
         createjs.Touch.enable(this.stage);
+        this.box = (this.canvas.width / 16); //16 = 1em
 
-        this.assetManager = new AssetManager(this.canvas);
+        this.assetManager = new AssetManager(this.canvas.width, this.canvas.height, this.box);
         this.assetManager.init();
         this.stage.addChild(this.assetManager);
         this.stage.on("stagemousedown", function(event){ Game.prototype.stageMouseDown(event); });
@@ -58,10 +59,10 @@
     Game.prototype.getWidth = function(){ return this.canvas.width; }
     Game.prototype.getHeight = function(){ return this.canvas.height; }
     Game.prototype.resizeCanvas = function(){
-        var content = document.getElementById("wrapper");
+        var content = document.getElementById("content");
         content.style.height = window.innerHeight+"px";
-        content.style.width = (this.canvas.width/this.canvas.height)*parseInt(content.style.height)+"px";
-        if (parseInt(content.style.width) > window.innerWidth) content.style.width = window.innerWidth + "px";
+        //content.style.width = (this.canvas.width/this.canvas.height)*parseInt(content.style.height)+"px";
+        //if (parseInt(content.style.width) > window.innerWidth) content.style.width = window.innerWidth + "px";
     }
     Game.prototype.retry = function(){
         window.timer.stop();
@@ -132,10 +133,6 @@
             document.getElementById('highScore').innerHTML = window.timer.toString(snapshot.val().time);
             document.getElementById('highScoreName').innerHTML = snapshot.val().name;
         });
-    }
-    Game.prototype.resizeCanvas = function(){
-        var content = document.getElementById("wrapper");
-        content.style.height = window.innerHeight+"px";
     }
     Game.prototype.hideRetryButton = function(){
         var button = document.getElementById("retry");
