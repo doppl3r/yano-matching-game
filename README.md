@@ -1,3 +1,5 @@
+development moved to https://github.com/doppl3r/yano/tree/master/games/christmas-cards
+
 # Yano Matching Game
 
 Get the highest score for matching the cards
